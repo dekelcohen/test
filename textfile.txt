@@ -1,1 +1,3 @@
 Text 6 at master
+
+Hello from another user chaning master before you commited
