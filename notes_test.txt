@@ -1,0 +1,837 @@
+HighLevelTaskRecommendUpdatesforSelectedEmail:The update list ranks higher updates from the logged in user network and from recent time. Timeline is the rest of updates (still filtered by this topic) sorted by to time
+Gremlin:.has('actor', 'email', 'yehonathans@harmon.ie')
+Gremlin:.has('date',gte(1518386400000))
+Gremlin:.has('topicId', within(topicKeys)) - topicId matching one of the elements in topicKeys array - as mongodb $in
+Gremlin:choose(values('age').is(lte(30)),
+Gremlin: Connect to local gremlin server using Gremlin Console
+Gremlin::remote console
+EmailTopicsDrilldown: Count > 3: Problem: Shouldn't count subject topics inside Conversation.
+EmailTopicsDrilldown: PER: Problem: user selects old email, with Tal, where Tal didn't exchange emails > 180 days --> topicId node 'tal' is marked isPerson = false -->
+EmailTopicsDrilldown:We cannot filter it out in Email Topics UI.
+EmailTopicsDrilldown:"TopTopics Sprint "Stories
+TopTopicsSprintStories: Q/A Reports:
+TopTopicsSprintStories:: Automated Summary Top Topics reports for 5 users - to be run and committed every change
+TopTopicsSprintStories: Languages ? English specific tokenizer, freq-words, black-list similarity patterns, signature detection, per patterns
+TopTopicsSprintStories: Advance Ranking, Similarity, NLP Terms, NER (PER,LOC) and Noise Reduction
+TopTopicsSprintStories: Assist the user in comprehension of displayed Topics (e.g. 'Display Topic Context', 'Group Co-occurring Topics'). Help building user trust in the product.
+TopTopicsSprintStories: Note: Their count is not the same, because one of the instances is preceded by 'Setup':
+TopTopicsSprintStories: all appear in same updates, and only in these updates
+TopTopicsSprintStories: Problem: Even if we eliminate subject duplication, we still have to rank high topics in subject, in a long thread with several from:ram
+TopTopicsSprintStories: Freeup slots in 5 top-topics
+TopTopicsSprintStories: Note: Related to 'Group Co-occurring Topics' above, but extend it to cases where context is non-topic (not a Term).
+TopTopicsSprintStories: Remove from Top Topics
+TopTopicsSprintStories: Motivation: Easier for a user to manage 5-10 Top-Topics that are well known.
+TopTopicsSprintStories: Add icon (X) to Top Topic UI
+TopTopicsSprintStories: Ignore Topic - even in drilldown and other views.
+TopTopicsSprintStories: They DO share some factors with isMarketingEmail
+TopTopicsSprintStories: Add To Top Topics
+TopTopicsSprintStories: attributes.userSelections.lastSelectionDate
+TopTopicsSprintStories: Why: my friend ignored the Topic but I didn't
+TopTopicsSprintStories: Workaround: D:\views\Collage\tools\collage-graph\neo4j-queries\affinity\affinity.json
+TopTopicsSprintStories: Neighbrhood / Context / PageRank - Good Topics appear together  (1-2 months)
+TopTopicsSprintStories: Problem: 'Register', 'Reminder', 'Webinar', 'Agenda' and other non-Topics (that better Google PROPN should filterout) --> may get a boost.
+TopTopicsSprintStories: Map a single collageUserId to multiple emails
+TopTopicsSprintStories: Used in ranking .fromMe
+TopTopicsSprintStories: Subject duplicate Terms count: When counting the terms per update (not conversation) --> count the subject terms for each update (artifact) even it is duplicated in the conversation.
+TopTopicsSprintStories: General Blacklist (all Orgs) - maintain old Collage BlackList (Thanx, LOL - frequent Urban dict / Slang words)
+TopTopicsSprintStories: SharePoint influencers (PROPN+NOUN)--> will add to counts of SharePoint Influencers (PROPN+PROPN)
+TopTopicsSprintStories: 'Enterprise          2             1' - filter out non-terms (propn followed by numbers but with tabs/spaces which are part of table columns - not 'MS Build 2018')
+TopTopicsSprintStories: Dictionary / Structured - 'Gazetteer'
+TopTopicsSprintStories: High Quality Structured - if from SP Metadata value (TermSet, Keyword)
+TopTopicsSprintStories: SharePoint Search for dictionary Topics (+ possible Short forms) to extract Topics from SP documents
+TopTopicsSprintStories: Reasons:
+TopTopicsSprintStories: Update regulary
+TopTopicsSprintStories: Similarity (3 months)
+Q/AReport-TopTopics: Goals:
+Q/AReport-TopTopics: Support Analysis of Regressions from Summary to Details and Drilldown to Algorithms results, original emails and changed code
+Q/AReport-TopTopics: Easy to execute (cmdline/CI)
+Q/AReport-TopTopics: Expected top-topic Yes/No --> Per user, date-range
+Q/AReport-TopTopics: Mark Topics (by users, per date-range) as top-topic, topic, non-topic --> rank changes measure considers if a good (top-topic) is moved down, non-topic up
+Q/AReport-TopTopics: Mark each report with commit message of what has changed --> link it to git (sha1/hyperlink to commit of relevant repo)
+Q/AReport-TopTopics: Delete this temp report and after commit, CI will run the official report with sha1 of all repos (github/vsts)
+Q/AReport-TopTopics:- - - - - - -
+Q/AReport-TopTopics: terms.json
+Q/AReport-TopTopics: Validation for config/cmd-line selections (-user and not --user)
+Q/AReport-TopTopics: Update central expected.json file
+Q/AReport-TopTopics: If not found in prev, lookup expected in expected.json (default expected, report user can override it)
+Q/AReport-TopTopics:"WebViewer
+Q/AReport-TopTopics:Med: Merge copyCommentsFromReport and updateReport: Similar, but topicId.value (updateReport), getPrev from git (copyCommentsFromReport)
+Q/AReport-TopTopics: SubmitChanges flow --> updateReport --> should also Commit to repo (as remote browser user won't)
+Q/AReport-TopTopics: Individual Algo output
+Q/AReport-TopTopics:Bug: All jArt saved in details (with their factors) - Today sig,per filters out
+Q/AReport-TopTopics:A: Store Algo output in topic.factors.dup.details = <array of logs> --> refactor factors.dup.value
+Q/AReport-TopTopics: Factors filters checkboxes - they present a subset of the detailed emails - only those with the checked factors (have to fix below bug to enable that).
+Q/AReport-TopTopics: Scenario: Major Algo commit (Ex: report:Fixed duplicate between subjects) --> Summary report with latest /report:/ commit comment
+Q/AReport-TopTopics: If dev suspects a regression --> Summary Diff to LKG --> all Code changes are displayed (see below)
+Q/AReport-TopTopics: Cont 2: Commit minor fixes (no regression, changes are really minor) --> retain same Summary report comment --> which is correct.
+Q/AReport-TopTopics:
+Q/AReport-TopTopics: Show git log between 2 commits
+Q/AReport-TopTopics: Diff Rendering and Scores
+Q/AReport-TopTopics: Trends for multiple Topics in a diff report (Dup is up, many deleted, count is down)
+Q/AReport-TopTopics:Header:
+Q/AReport-TopTopics::Q: td for topicId, rank, count --> combine the rest into a single td ?
+Q/AReport-TopTopics: Either from Reports menu or FileSystem
+Q/AReport-TopTopics: DropZone of 1-2 files  --> send to server their text
+Q/AReport-TopTopics: Chart iter history.json and render
+Q/AReport-TopTopics: Q: Should we go back to recalc stats for every summary in the past (Git log --> git show Summary for each commit) ?
+Q/AReport-TopTopics:--> Dashboard can go back to prev history.json (display git log in UI) --> display with prev expected.json
+Q/AReport-TopTopics: Summary (Avg of expected topTopics / first 10)
+Q/AReport-TopTopics:https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Remote&selectedStory=Remote%20Sort&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel
+Q/AReport-TopTopics: How to share code between server and client
+Q/AReport-TopTopics: Problem: New attribute added --> not found in oldTopics --> treat is is 0 or specify added ..
+Q/AReport-TopTopics:Diff Flow (Moved url to 1st and moved owa to 2nd)
+Q/AReport-TopTopics:Simple 1 move
+Q/AReport-TopTopics:2 url
+Q/AReport-TopTopics:- - -
+Q/AReport-TopTopics:3 office365
+Q/AReport-TopTopics:2 url
+Q/AReport-TopTopics:3 office365
+Q/AReport-TopTopics:- - - - - - - - - -
+Q/AReport-TopTopics: It is 126MB !
+Q/AReport-TopTopics: Click to display Summary
+Q/AReport-TopTopics: <span style="background-color: #FFFF00">28-29</span>
+Q/AReport-TopTopics: Highlight - convert to <span style={styleObj}>
+Q/AReport-TopTopics:A: diffHideEmpty metadata
+Q/AReport-TopTopics: How to Rank-Diff between reports ?
+Q/AReport-TopTopics: Right click on Summary.txt | Topics Report Diff
+Q/AReport-TopTopics: Moved in ranking
+Q/AReport-TopTopics: Problem: not tracked (ex: url rank 2.6 --> 3 and it moved pos 72 --> 59 --> user may incorrectly think  it is a new topic)
+Q/AReport-TopTopics: Araxis like connecting line between left and right sides.
+Q/AReport-TopTopics: Q: How to fill in comments
+Q/AReport-TopTopics: How to inherit the comments of prev report ?
+Q/AReport-TopTopics: Abstraction: ReportsStorage.getPrev(reportId). reportId is opaque identifier - reports path
+Q/AReport-TopTopics: Future: several lines for large text fields with \r\n
+Q/AReport-TopTopics:: Q: Do we need report-template-config file to populate cmd-line yargs options ?
+Q/AReport-TopTopics: Multiple users support
+Q/AReport-TopTopics: Git Repo (Collage.Topics)
+Q/AReport-TopTopics: Per User folder
+Q/AReport-TopTopics: Per date-range folder
+Q/AReport-TopTopics: A: Keep Summary and Algo output structured-text
+Q/AReport-TopTopics:A: clone Collage.Topics --> call reports.js --> commit and push into my_reports
+Q/AReport-TopTopics: Do not duplicate all emails in each report
+Q/AReport-TopTopics: file for Each algo output (duplicate pairs, sig, terms)
+LanguageModel:--------------------------
+LanguageModel:A: Doens't help, since even if total is 3-4, usually common english words will be mostly allLower --> later, if 3-4 resulted in a mistake, it will be fixed once more stats are gathered.
+LanguageModel: Q/A: expectedTopicsTest Compare --> Why diff from
+LanguageModel: Q/A: referenceCount in MongoStorage
+LanguageModel: Suspected async / concurrent access to lmConversations -->
+LanguageModel: It only occur in subjects: connecting software, RE: connecting software, Connecting Software, RE: Connecting Software
+LanguageModel: LanguageModelStorage --> GenericStorage
+LanguageModel: ../../Collage/.../LanguageModelStorage --> GenericStorage
+LanguageModel: Pass collection in connect
+LanguageModel: Perf / Mem: Optimize langModel storage and Perf
+LanguageModel: Filter non-alpha-numeric ngrams
+LanguageModel: Not sure which 'special chars' to keep
+LanguageModel: How to garbageCollectLowStatsFromDb in incremental ?
+LanguageModel: Remove Reports\langModel.js after all tests completed
+LanguageModel: Today, we slide a window of 1,2,3 ngrams and store stats in Mongo.
+LanguageModel:
+LanguageModel: Online: Incremental Update of LangModel:
+LanguageModel: Pipeline of a single Update: Url-Preprocessing ? --> Terms-Processing --> single word grams --> LangModel batch-update Redis-Lua (below)
+LanguageModel: Today: Store in-mem-dict for detecting duplicate  (easy because langModel is incremenetal Offline)
+LanguageModel: Before processing an update --> lookup cur ConversationId in Db --> If exist --> ignore Subject
+LanguageModel: If exist --> words from Subj were already processed by another worker (seen an update from same ConversationId)
+LanguageModel: Impl: Problem: Atomicy (Multiple LM workers).
+LanguageModel: Offline:
+LanguageModel: Impl: nodeJS that wakes up every hour ? cronjob ?
+LanguageModel: Ex: gName: 'alert' is not lmBadTopic --> *ALERT* , Alert is common in subject
+LanguageModel: More Good Topics (Ram, Old Mongo Reports)
+LanguageModel: How to disqualify bi-grams ? (Currently only disqualify unigrams)
+LanguageModel: Possible Maybe ATE/ATR methods see 'Terms Processing' and not simple langModel are more suited ?
+LanguageModel: How can we disqualify 'online meetings' ? It is the same meaning in both lower and upper.
+LanguageModel: Google NGram Viewer doesn't show any differences. 'proxy configuration' is of low freq compared to others   https://books.google.com/ngrams/graph?content=Management+Buyout%2Cmanagement+buyout%2CDaily+Report%2CDaily+report%2Cdaily+report%2Cweb+page%2CWeb+Page%2CProxy+Configuration%2CUser+Name%2Cuser+name%2COnline+Meetings%2Conline+meetings&year_start=1800&year_end=2003&corpus=15&smoothing=3&share=&direct_url=t1%3B%2CManagement%20Buyout%3B%2Cc0%3B.t1%3B%2Cmanagement%20buyout%3B%2Cc0%3B.t1%3B%2CDaily%20Report%3B%2Cc0%3B.t1%3B%2CDaily%20report%3B%2Cc0%3B.t1%3B%2Cdaily%20report%3B%2Cc0%3B.t1%3B%2Cweb%20page%3B%2Cc0%3B.t1%3B%2CWeb%20Page%3B%2Cc0%3B.t1%3B%2CProxy%20Configuration%3B%2Cc0%3B.t1%3B%2CUser%20Name%3B%2Cc0%3B.t1%3B%2Cuser%20name%3B%2Cc0%3B.t1%3B%2COnline%20Meetings%3B%2Cc0%3B.t1%3B%2Conline%20meetings%3B%2Cc0
+LanguageModel: Do not not disqualify bi-grams without additional evidence (higher threshold, isFreq bi-gram, in external-Dict-Wikipedia https://en.wikipedia.org/wiki/Management_buyout) ?
+LanguageModel: startsUpperFirstInSentence - shouldn't be in subject (because it is not really a sentence and may be a title: 'Management Buyout')
+LanguageModel: Count lowers as Topics:
+LanguageModel: Co-occur upper-lower: If we see 'Management Buyout' near (same email) 'management buyout' - they are probably the same. Especially since they are not freq-bi-gram the email is not very long
+LanguageModel:  Sub Compound for lowerCase - 39 of the 228 lowee are 'on board' --> we need to remove them. 'board meetings', 'board of director of harmon.ie'--> will
+LanguageModel: A: They appear together 6 times. 'Management Board' appears inside a URL ! https://harmonie.sharepoint.com/finance/Management%20Board/Q1%202018/Board/harmon.ie%20Board%20Agenda%20April%202018.doc
+LanguageModel:: 'Teams' 'Story' - Sub-Topic skews counts: When Unigram (Story) occurs inside a compound phrase
+LanguageModel: afterMidUpperSU: Count startsUpper after a word that is also SU, but not first in sentence --> meaning inside a compound phrase
+LanguageModel: Note: Only if initial results are encouraging
+LanguageModel:: Q: Filter out isMarketingEmail for LM ?
+LanguageModel: The language model will reflect better the manually-written Org language style. Marketing emails tends to add Capitalized Phrases ...
+LanguageModel: Ex: General - general:{score:-1,stats:{_id:5ae8644ef876990c7cd93fb8,gName:general,allLower:63,startsUpper:207,startsUpperFirstInSentence:61,afterPosSU:11,afterAnSU:0,afterNumSU:1}}
+LanguageModel: Has startsUpper >> allLower
+LanguageModel: General Inquiries: 647-258-3800 (from salesforce marketing email)
+LanguageModel: General Data Protection Regulation
+LanguageModel: Save every normalized subject processed and do not process new subject if already processed.
+LanguageModel: helpers.getNormalizedSubject(subj)
+LanguageModel:duplicates (Ex: Google)
+LanguageModel: In General, it seems LM helps mostly with common uni-grams disqualify BadTopics which are also commonly used in emails
+LanguageModel: Dictionary Fix common-words which are Topics in harmon.ie (Build, Word)
+LanguageModel: afterMidUpperSU (temp disabled) Compound Sub Phrase:  Filter  Unigram (Story/Teams) occurs inside a compound phrase 	(User Story, Microsoft Teams)
+LanguageModel: Problem: It reduces the upperCount (- afterMidUpperSU), but doesn't have a balancing formula to reduce also lowerCount (e.g on board) + reduce lower board used as same Topic as upper 'Board'
+LanguageModel:incorrect: 56 --> 52,
+LanguageModel: lowStats (total < 6 ): Many are ORG with all occurrences in upper.
+LanguageModel: Ex: xenmobile, xenapp, xenserver - were only in isFocused : false mails.
+LanguageModel: Possible Explanation: While Email marketing changes counts, they use a similar terms to the ones we use - that is why we registered for them --> LM is not changed by much.
+LanguageModel: Added isFreqWord -
+LanguageModel: Bad Topics which LM thinks a good + Why it thinks Good.
+LanguageModel: intelligence - Part of Compound Topic - isMarketingEmail, Dups ?
+LanguageModel: Ex: Word, Excel or PDF documents -->
+LanguageModel: cheers - signature removal.
+LanguageModel:-----------
+LanguageModel: Framework:
+LanguageModel:node helpers\mongo_diff.js --collectionOld languagemodel  --collectionNew languagemodelnew --key gName
+LanguageModel: isFocused
+LanguageModel:Q/A: Fix: nlp report is broken
+LanguageModel: langModel.js: If LM --> try repro with  (maybe without much memory flag)
+LanguageModel: reduce update rec chunk size - so we can compare duration Ms. Does it matter ?
+LanguageModel: New tokens are not saved - when their content change (ex: NER changes from O to PERSON), but their number and text doesn't
+LanguageModel: Problem: Old bug: shallow arrayDiff
+LanguageModel: ConversationId collection duplicate subject test in Extractor
+LanguageModel: --exclude per,lm [array of algo] / --include term --> allow only terms extraction or only a single algo
+LanguageModel:10037FFE840A566E
+LanguageModel: saveStatsToDb(stats) - Write / Append to mongo lang-model stats table
+LanguageModel: start-sentence upper
+LanguageModel: upper following a or an
+LanguageModel: A: Not PropN according to SNER (verb)
+LanguageModel: Output LM Topics report in Json.
+LanguageModel:JVM "JavaScriptEngine for Porting
+JVMJavaScriptEngineforPorting: maven plugin + goal to git sparse checkout xxx/report/dist/topTopicsEs5.js
+JVMJavaScriptEngineforPorting: Mostly topTopics::getTopTopicsFromFilteredArtifacts.
+JVMJavaScriptEngineforPorting: Otherwise, see benefits for polyglot development here (call JS from Java or call Python from JS with no overhead): https://www.graalvm.org/docs/why-graal/#for-java-programs
+JVMJavaScriptEngineforPorting: How to pass console object (missing by default) - http://pieroxy.net/blog/2015/06/29/node_js_vs_java_nashorn.html
+JVMJavaScriptEngineforPorting:"Maven"
+Maven: Create a maven pom.xml with java/main/src and java/main/test project structure
+Maven: https://devcenter.heroku.com/articles/local-maven-dependencies
+Maven:<repository>
+Maven:<url>file:${project.basedir}/../repo</url>
+Maven:</project>
+Milestone2: Create collage_stable --> change package.json
+Milestone2:"Post Milestone
+PostMilestone: YS: filter bad topics
+PostMilestone:node extractTerms.js --save --userDataDbURL mongodb://localhost:27099/july
+PostMilestone: Bug: 'vp' yc aug 17 prod (research: 18 - 3 sig)- 2 more artifacts in Prod vs. Research
+Postmortem: Debug Info
+Postmortem: Process: Blocked: Raise hand in Teams and explain why. Always thinks how to unblock yourself
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor): 9954 different topic/term in prod and research
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor):2) Encoded text: token1 : 'VP', following token: 'R&D' --> body contains VP%20R%26D  --> prod terms-processing tokens filter filters out R&D
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor): Problem: duplicates term is before the Sig --> its rightNbr extends into the Sig ('Topic Text' Thanks, Asaf\nMobile: +44 ...) --> rightNbr is different in Prod vs. Research
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor): PER - if stanford behaves differently (older corenlp in research, or )
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor): Update containedTopicsTopicKeys if new containedTopicsTopicKeys.length > old-containedTopicsTopicKeys.length
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor)://long dateBarrierFrom =1530392400000L; //JUL 01-Jul-2018 00:00:00
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor):----------------
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor):2) Delete collections in PROD mongodb (or start new k8s)
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor): Note: Change to correct DB
+DiffbetweenMongoprod(terms-processing)andMongoResearch(batchExtractor):4)
+Duplicate:topicKey: office365
+Duplicate: Prod Java also contains this fix, hence the diff
+Duplicate: Research commited: vp rank: 6.5 count: 18 fromMe: 5 sig: 3 dup: 12 comment: expected
+Duplicate:topicId: vp,
+Duplicate:general: false,
+Duplicate:childRank: 15.6,
+Duplicate:totalSentByMe: 7,
+Duplicate: Sig - Noam on the right (removed in Prod) + nlLeftNbr has common prefix (in another pair)
+Duplicate: Prod:
+Duplicate: mvn deploy error
+Duplicate: Test Java diff between .json mocks before (already have it) and after.
+Duplicate:Rewrite in Java
+Duplicate: Implement adjustTopicScore inside common. Alt
+Duplicate: Q/A:
+Duplicate: Cleanup: remove textForTermsExtraction - not needed anymore
+Duplicate:: Bug: Problem: Production remove tokens that do not appear in subject or body --> remove endOfSubject special token --> isTitle is incorrect + cannot enrichDuplicate
+Duplicate: Commit text-duplicate-detector in github and update package for all users
+Duplicate: Pass Graal JS unitTests
+Duplicate: Commit Graal JS unitTests
+Duplicate: Problem: Cannot step into Java from JS
+Duplicate:export dupPath=`wslpath 'D:\views\Collage.Topics\Reports\java\duplicate-detector\target\classes'`
+Duplicate:cd `wslpath 'D:\views\github\text-duplicates-detector'`
+Duplicate:Bug (but same as JS) (?:^|\W) --> causes match ' Dekel' instead of 'Dekel' --> idxStart is -1 (indexOf space) instead indexOf('D')
+Duplicate:isDuplicate(String topic1, String text1, String topic2, String text2
+Duplicate: const BigInteger = Java.type('java.math.BigInteger')
+Duplicate:text += BigInteger.valueOf(10)
+Duplicate: Docs (Access Java from JS): https://github.com/graalvm/graaljs/blob/master/docs/user/JavaInterop.md
+Duplicate: node --inspect-brk reports --userDataDbURL mongodb://localhost:27099/collage_new --user ramt -d aug > batchExtractor\output\duplicate_occur.txt
+Duplicate:Bug: catalyst, toshiba - occur both dup and non dup in the email (sig is dup)
+Duplicate:  Require all occur to be a dup to disqualify the artifact
+Duplicate: Delete sensitive emails  + TopTopics emails (were already deleted)
+Duplicate:: Do not merge this commit !
+Duplicate: Changes from prev impl:
+Duplicate: If artifact discounted --> numOfDups +=1 --> Return  for each topic (only  occur) --> update factors.dup	(in outer discountDuplicatedTopics)
+Duplicate: No dups between .occur of same artifact (filter out from othersArtifacts all other occurrences in current artifact)
+Duplicate: Online: new Update --> Terms --> Store each Term with Context + character position within Context
+Duplicate: Q: Where to store the nbrs of each Term ?
+Duplicate: A: CosmosDB: about edge stores Context + timestamp
+Duplicate: Reduce left nbr size from 70 to min 20 depending on Term length (very long + number of words in compund)
+Duplicate: If some of the N candidates have approx same matched text chunks --> duplicate = true.
+Duplicate: Ex: Stone Calibre is a good topic (customer) appears in an SP urls that were manually inserted into the email (because this is the email's main topic) https://harmonie.sharepoint.com/sites/dataroom/Shared%20Documents/Internal%20documents/Targets/Stone%20Calibre/Project%20Harvest%20-%20On-site%20Agenda%20(3.26.18).pdf>
+Duplicate:Bug: inSubject duplicate is using too small env
+Duplicate: complete the new inSubject right/left minLenCompare  - not enough
+Duplicate:: Review other inSubject duplications - We want to only detect spammers
+Duplicate: Problem: Contact leftNbr lenCompared = 7 with exact match (but < MIN_LEN_COMPARED = 10)--> nbrDistShortInSubject requires right prefixMatch of 3 to complete to 10
+Duplicate: Return of isDuplicate boolean --> change to 0, 0.5, 1 --> numDuplicates --> change to getDuplicateScore --> count 0.5
+Duplicate: nbrDistShortInSubject (innerNbrDistShortInSubject in java) --> change to return 0.5 if the other (right) nbr is 0 length
+Duplicate: We cannot expect it to match, since there is not right / other nbr. If there was a small one  1-4 chars) --> we can expect a prefixMatch
+Duplicate: Problem: tokens characterOffsetBegin are in update.body --> bodyForTermsExtraction (after sig removal) --> getBody
+Duplicate: characterOffsetBegin should work fine.
+Duplicate: Use min and max charOffsets in nbr substring ranges
+Duplicate: getSubjectEndToken --> -1
+Duplicate: Ex: Microsoft in <AM5PR0601MB24347F1674046465748CD223C52C0@AM5PR0601MB2434.eurprd06.prod.outlook.com> doesn't have leftNbr as expected ?
+Duplicate: topics-job --> import Maven .jar of DuplicateJ
+Duplicate: Add java to terms_processing package
+Duplicate:Q/A: Add to update_package the 2 new admin-management + topics-job
+Duplicate: Add normal <dependency> on duplicate-detector
+Duplicate: Clean up my Dekel machine local reposity ( C:\Users\Dekel\.m2\repository\com\github\gastaldi\git-sparse-checkout-plugin)
+Duplicate: Document: Build Script of build (mvn deploy?)  --> deploy to Collage.Topics/Report/java/repo --> npm run collage_stable_all
+Duplicate: Accidently commited the regressive fix attempts (see below inSubject) - fix
+Duplicate:Bug: SPNA dup discount
+Duplicate: subject:Accepted: SPNA - Pre show meeting
+Duplicate: subject:Accepted: SPNA - Day 1 - Post show meeting
+Signatures:: sent from my: In Stash of signature-detector github repo
+Signatures: Change to consider sig-trigger from first line (idx 0)
+Signatures: The ratio: score / lines before the real sig should below low threshold (say 0.2):
+Signatures: score inclusive - (score included + 1 if isSender) / <lines inclusive - lines included>.
+Signatures: Note It may be negative (nominator) - but it is o.k.
+Signatures: Analysis: 2 competing candidates one is inclusive (like this example) --> we have to give the shorter a chance. Note that all triggers except senderName will not
+Signatures: Ex: Elina
+Signatures:הצביעו והשפיעו !!
+Signatures:סמן ליד המנות אותן אכלת, את דרגת שביעות רצונך מהמנה.
+Signatures: Ex: Best Regards (correct-trigger ) before sender name is not taken as part of sig
+Signatures:: Bug: senderName followed by its email is not a trigger
+Signatures: weaken ___ trigger (to fix Elina and others): Can require it is followed by another trigger (sender or re) ?
+Signatures: David sig requires this trigger - doesn't have enough score if triggred by sender
+Signatures:________________________
+Signatures:: Bug: candidates are ordered by score, but if a 2nd (lower score) canidate has a passing score/sig-lines ratio --> incorrectly will not pass
+Signatures:________________________________
+Signatures:Unsubscribe<https://app.joinblink.com/#/unsubscribe?user=u-5bdd6a4d-c4cd-4e66-9d6a-4dc4cdae6629> from these emails.
+Signatures:Mobile: (310) 344-6107
+Signatures:info@dealounge.net
+Signatures:diff in update1: before: incorrect, after: not extracted (but it is extracted)
+Signatures: Test + Commit split listLine
+Signatures:up the node_modules of the linked repo ! It also removes the link.
+Signatures: "MPM public release processes
+Signatures: package.json: Change in  the giturl#development --> ^0.new ver
+Signatures:npm login
+Signatures:git checkout development
+Signatures: Problem: Sig works only for first one --> deleting all Topics in quoted emails.
+Signatures: Parse email body for quotes. Detect and do not cross in signature - both in scoring and in final extraction
+Signatures:<OFE5BDCA30.F7911AE2-ON8525823A.00491717-8525823A.00494533@notes.na.collabserv.com>
+Signatures:From: Jean Buchnik <jeanb@harmon.ie<mailto:jeanb@harmon.ie>>
+Signatures:Bug: Regression: Tal sig is not detected in all cases anymore (it is detected in most cases)
+Signatures: Sender displayName filtering - should use the new non-Per (used for PER and marketing)
+Signatures:Boston, MA 02210
+Signatures: harmon.ie 31 Milk Street, Boston, MA 02109
+Signatures: 2049 Century Park East, Suite 2550\r\nLos Angeles, CA 90067
+Signatures: confidentiality messages - find samples in internet
+Signatures: Add below long-lines inside sig to tests (Influencer marketing ...)
+Signatures: If mayBeSigStart hint also appears in the middle of the sig  (sender name, ______ to separte sig from ecological/antivirus paragraph) --> the first, real sig is ignore !
+Signatures: Problem: There are sometimes very long lines (antivirus, ecological, advertisment - see ex)
+Signatures: rankedCands --> Prefer higher score but also close to the bottom of the email (the bad sig and the good sig had same score 4.25)
+Signatures:JFK – Chicago Jet Blue 8:20AM
+Signatures:Chicago – NY 13 May evening
+Signatures:[cid:image001.jpg@01CEA712.15640750][cid:image002.jpg@01CEA712.15640750]<https://twitter.com/dlavenda>
+Signatures:- - - - - - - -
+Signatures: Date vs. PhoneNumber ambig
+Signatures: Problem: disclaimer and legit long lines inside sigs with lower scores (now that we do not allow the +1 of their urls and we do not still detect them)
+Signatures: Consider num word range (9 < num words < 15) that urls only score += 0.25
+Signatures: Problem: Multiple url at a List like like (but is not a list)
+Signatures: Add diag collect obj to maybePhone --> getSignatureScore --> getSignature retval  --> use it in testing and debugging + diff reports
+Signatures: Split on '([ \-.()/]{1,4})'
+Signatures:19-49-89-636-48018 Dialed from France
+Signatures: Should recognize:
+Signatures: +353 91 514 502
+Signatures: +972-3-6005472
+Signatures: +1 (647) 497-9353
+Signatures:Bug:  score=3.25	- Thanks --> short email (2-3 long lines) --> long signature (many good sig lines) --> may cut entire email !!!
+Signatures:Attached is a list of follow-up questions / requests from our meeting yesterday.  Please let me know if you need any clarification on the requests.
+Signatures:Best,
+Signatures:Office: +1 (310) 774-0014
+Signatures:Emelie Lundin
+Signatures:European SharePoint, Office 365 & Azure Conference
+Signatures:https://www.sharepointeurope.com
+Signatures:fiftyfiveandfive.com<http://t.sidekickopen06.com/e1t/c/5/f18dQhb0S7lC8dDMPbW2n0x6l2B9nMJW7t5XYg3Lr2NCW1ptzHg3VWsM0F3B6ZzM-8sZdLL4c603?t=http%3A%2F%2Fwww.fiftyfiveandfive.com&si=6686242426585088&pi=3f141cec-afe1-4dcd-8e8a-a596baacde71>
+Signatures:________________________________
+Signatures: Restrict Skype (can be mentioned outside sig when coordinating a call)
+Signatures:: Filter out blacklist: mailto
+Signatures: case-insensitive (--jean) - but do not trust it (only if properly supported by following lines)
+Signatures: Use from.displayName (easier than emailAddress) --> If a short line contains at least one of the words in displayName, plus it is close to end of line, plus it is at
+Signatures: Filter out
+Signatures: If some of the words that matches parts of email address domain @us.ibm.com --> ignore these words:
+Signatures: from.emailAddress - take left to @ + processes similar to displayName ?
+Signatures:displayName : 'dekel cohen (dekelcohen@gmail.com)'
+Signatures: Examples:
+Signatures: Richard sig failed with 2 bugs (it return null).
+Signatures: Workaround: After 'thank you|thanks|thanks|regard|sincerely|Best|with appreciation|with gratitude|yours truly|cheers|faithfully|sent from my'
+Signatures:Bug: Flight ticket email text - see dddd.txt is detected as signature.
+Signatures: Last pattern of this type (to exluded Thanks at the beginning of the email)
+Signatures: Remove no more than 17 lines.
+Signatures: Problem: npm install doesn't update giturl branch depency:
+Signatures: Collage.Topics: npm install email-signature-detector --> use it from tests and report
+Signatures: David:
+Signatures: Thanx count 96 --> 47 (because it was removed by 49 sigs - using the new signature algorithm)
+Signatures:Thanks!
+Signatures:Development Manager, IBM Connections.  (IBM Collaboration Solutions)
+Signatures:IBM Corporation, B500/D117, 4205 S. Miami Blvd, RTP, NC, 27703-9141
+Signatures:Richard Poole
+Signatures:Chief Technology Officer, EMEA
+Signatures:United Kingdom
+Signatures:Thanks,
+Signatures:Hila.
+Signatures:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Signatures:Mathew
+Signatures:Mobile: +1 408 708 9898
+Signatures:o: 617-986-5038 | m: 339-236-9206 | e: gina@famapr.com
+Signatures:- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Signatures:Tel: +1-845-913-7240
+Signatures:Thanks,
+Signatures:sicimpur@microsoft.com
+Signatures:Thank you.
+Signatures:Administration Manager
+Signatures: Add to pagent D:\Collage\test-keypair.ppk
+Signatures: Plink to test3 -
+Signatures: See shortcut on desktop
+Signatures: docker-compose -f  /var/vsts/r1/a/collageArtifacts/docker/docker-compose.testing-aws.yml restart
+Signatures: Alt: docker restart <container-id>
+Signatures: Login as a user (to get cookies )
+Signatures: Note: Pipeline without tests, which are outdated.
+Signatures: pm2 restart 1 && pm2 logs 1
+Signatures:1|updates- | 2018-05-02T14:19:56.096Z [mailPager] verbose: Call adaptMessage not avail: internetMessageId subject: undefined createAt: undefined collageUserId: 10033FFF840B2EA6
+Signatures:Bug: 2100 emails (many of yaacov, but some ramt and dekelc) do not have from: in mailUpdates. They have to: and other fields.
+Signatures: Some from emails (that exist in msgraph messages) --> do not have corresponding /people request
+Signatures:{
+Signatures:"@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('49cd7a06-ae93-4213-b214-d28ef3a7a6bf')/people",
+Signatures:}
+Signatures:'emailAddress': {
+Signatures: Ex: https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$filter=contains(subject,'[Planio] Your Planio invoice no. 1802070337')
+Signatures:"emailAddress": {
+Signatures:"address": "support@plan.io"
+Signatures:}
+Signatures:D:\OWA\Samples\ExchangeEwsManagedApi\ExchangeEwsManagedApi\bin\Debug\ExchangeEwsManagedApi.exe  > dekel.txt
+Signatures: Robustness - this is the main reason I'm going through this ...
+Signatures: Count query for Items (perfer EWS) - compare to 'Subject:' count
+Signatures: A: pageSize to 300 --> Exception.
+Signatures: Print from exchangeSuperuser expressApp --> Test in Postman
+Signatures: Use Product:
+Signatures: A: Mails were deleted- MS Graph api do not return them anymore.
+Signatures: ISODate("<date str>")
+Signatures: A: Get last message ReceivedDateTime --> request less-than
+Signatures: Tokens for yc-mailPager were not written during the successful paging nor at the end,
+Signatures:internetMessageId: "<D915661D5E1E080E6C1E9BEBC9099814E3F8D86A@WIN-342LJC90RA7>",
+Signatures:https://graph.microsoft.com/v1.0/me/people?$filter=scoredEmailAddresses/any(x: x/address eq 'shalomtal@hotmail.com')
+Signatures:A: Probably because it reinserts the same updates already in mongo - no effect
+Signatures:607 https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$filter=ReceivedDateTime ge 2018-03-15 and receivedDateTime le 2018-04-25&$count=true
+Signatures: Indexes on dates, from, to,
+Signatures:: Incremental Fetch
+Signatures: simple - no dependency, can run from any machine (user sends the json[s])
+Signatures: Hard to do Incremental, Deleted Folder - any operation which is not Append-Only.
+Signatures: Not enough data for large statistics (Language Models, Rosette Unsupervised Training ...)
+Signatures: Bugs (Missing artifacts in conversations longer than 10, 6 emails for Yaacovc)
+Business/UserScenarios: Librarian - Admin Dictionary
+Business/UserScenarios:----------------------------------------
+Business/UserScenarios: Study Ranking evaluation formulas and adapt them to our needs (non-topic, top-10 ...)
+Business/UserScenarios: Why these topics (1 month from graph without isTopic / ignored filter) do not appear for Ram in mongo
+Business/UserScenarios: Combine Author-Topic score boost after Top-Topics aggregate
+Business/UserScenarios:a) Sent by cur-user
+Business/UserScenarios: Workaround: Find simple email (possibly with a reply) that was sent by cur-user and is associated with the topic
+Business/UserScenarios: Meaning: The terms contained in body are by cur-user (Topic Author)
+Business/UserScenarios: No Reply Text: Even in updates of the replier (Kobi), the body is the original body (only the text dekel wrote)
+Business/UserScenarios: Workaround: Allow more time (2-4 Months).
+Business/UserScenarios: Problem: Some Junk Topics were replied (Close-Won: 'Job', 'SOHO', 'Opportunity Link' ...)
+Business/UserScenarios: Only boost score of updates that were replied to and actually contribute  1 --> 1.5 to updateCount to a Topic in last 7 days.
+Business/UserScenarios: Ex: Yaacov recieved 3 emails (To, CC) about Euclid, but didn't write it himself but did reply to it.
+Business/UserScenarios: Duplicate Texts - Ram: 'Office 365' and 'URL' - Support Request, 'Username' - Order fulfillment emails,   - see 'Duplicate
+Business/UserScenarios: Can we use hashes / word-shapes in a window around the term ? Privacy + Small space overhead per term in an update
+Business/UserScenarios:A: Improved somewhat (because we already manually removed reply-to emails manually )
+Business/UserScenarios: Query Impl: discount updates with Senders which are:
+Business/UserScenarios: Or From length >= 5
+Business/UserScenarios: TF-IDF / Count Too High : Investigate Remove Count > Cutoff ?
+Business/UserScenarios: /used from msgraph
+Business/UserScenarios: Emails Filed (in Outlook Folder or SP) - more important
+Period:Goal: The report should present novel/informative/trending topics
+Period: Metadata required: YC doesn't have folder structure, as davidl - he requires Metadata from SalesAccounts
+Period: yc/used: Outlook occur alot in previewText
+Period: Does office 365 (or which of its children) - really top topic for ramt mar-apr ?
+Period: Only remove very General-Terms (sharepoint? office? - but not outlook)
+Period: Use Affinity on last several Months.
+Period: POC: Tested on all users - mostly david, yc, ramt, some noaml - a gross approximation of an affinity ... (~10000 emails)
+Period: See D:\views\Collage.Topics\Reports\nlp\output\affinity_4_users_4_month_10000_emails.txt
+Period: 'office365' rank: 36.07 count: 161 factors: { fromMe: 4 sig: 10 dup: 12 automated: 22 autoEmail: 7 reFilt: 17 childRank: 104.4 childCount: 91 general: true}
+Period: 'q1' rank: 13.67 count: 50 factors: { fromMe: 1 dup: 10 autoEmail: 1 childRank: 25.000000000000004 childCount: 18 general: true}
+Period: 'twitter' rank: 8.00 count: 78 factors: { sig: 32 automated: 15 autoEmail: 7 reFilt: 8 reFiltNotAutomatedDiff: 4 childRank: 8 childCount: 16 general: true}
+Period: Nested in other terms:
+Period: Problem: 'Board' --> 'Management Board', 'Advisory Board'
+Period:4) Semantic Relatedness: A term is more general if it is semantically related to many specific terms.
+Period: Note: We can use word2vec or other measures - similar to SemRe-Rank (that also uses baseline extractor and then word2vec measure Semantic Relatedness)
+Period: Graph based methods - If a Term is Semantic Related (Co-occur, Distibutional, word2vec) to many other Terms --> General Term
+Period:https://hal-lirmm.ccsd.cnrs.fr/file/index/docid/1068556/filename/PolTAL2014.pdf
+TermsProcessingCompound-Unithood:-----------------------------
+TermsProcessingCompound-Unithood: D:\Dekel\Dropbox\Mainsoft\Collage\QualityFeedback\Alpha\eng_phrases.txt
+TermsProcessingCompound-Unithood: Almost every captialized word or non-word is considered NNP
+TermsProcessingCompound-Unithood: Ex: S201804020253445112
+TermsProcessingCompound-Unithood: SharePoint R2018sp1
+TermsProcessingCompound-Unithood: Join them back if before/after are empty
+TermsProcessingCompound-Unithood: Remove RE: (it affects processing)
+TermsProcessingCompound-Unithood: Active Directory paths: /o=ExchangeLabs/ou=Exchange%20Administrative%20Group%20
+TermsProcessingCompound-Unithood: Problem: Some file names (as in SP Docs) can be quite informative - investigate
+TermsProcessingCompound-Unithood: Q: How to intersect with token Indexes ?
+TermsProcessingCompound-Unithood: Note: Already given to nlp-client - fullText
+TermsProcessingCompound-Unithood: isSharePointUrl
+TermsProcessingCompound-Unithood: Either /Forms/*/*.aspx or matches connector (config) of base SP site url or _layouts/*/*.aspx or http[s]://*.sharepoint.com
+TermsProcessingCompound-Unithood: SpUrl Examples:
+TermsProcessingCompound-Unithood: Getting started with harmon.ie-DE.DOCX<https://harmonie.sharepoint.com/Product/Documentation/Getting%20started%20with%20harmon.ie-DE.DOCX>
+TermsProcessingCompound-Unithood: Open In Office Online<https://harmonie.sharepoint.com/Product/_layouts/15/WopiFrame.aspx?sourcedoc=%7b1B4BDF74-78D9-4A8B-8724-B1350ADA552D%7d&action=default>
+TermsProcessingCompound-Unithood: \r\n\r\nhttps://harmonie.sharepoint.com/Lists/Employee%20Vacation/calendar.aspx
+TermsProcessingCompound-Unithood: /_layouts/15/start.aspx#/)(.*)([?&])(ID=[0-9]+)(.*)
+TermsProcessingCompound-Unithood: Remove File Extension (.docx, .7z)
+TermsProcessingCompound-Unithood: readhttp:// concat with 1 word before url (if no space) --> we need to manualy
+TermsProcessingCompound-Unithood: Consider <Topic>: (Term ending with colon) --> low rank. Ex: Forms
+TermsProcessingCompound-Unithood:"Terms-LM
+TermsProcessingCompound-Unithood: Toofr | Want help getting appointments?
+TermsProcessingCompound-Unithood: Ex: * Arbitrary arguments
+TermsProcessingCompound-Unithood: Test for bullets *, pipes (|)
+TermsProcessingCompound-Unithood: [Last Chance-Register Now] --> Last Chance is a badTopic that will occur only at sentenceStart once we make the change.
+TermsProcessingCompound-Unithood: Watson Workspace (Toscana Project) --> This is not a sentence start --> it is an NNP insideBrackets
+TermsProcessingCompound-Unithood: See atr4s - they may have this kind of logic
+TermsProcessingCompound-Unithood:	Ex: 'Cloud computing' - NN
+TermsProcessingCompound-Unithood: Count in same Update / Same Conversation / Nearby Updates --> higher LM score
+TermsProcessingCompound-Unithood: Ex: Parent Topics: If mail contains 'Microsoft keynote' --> It may also contain 'Microsoft' --> which should have higher influence when calculating parent of 'Microsoft keynote'
+TermsProcessingCompound-Unithood: Compound number of tokens limit:
+TermsProcessingCompound-Unithood: If parent Topic exist (len=5)--> add the new term (without the 6th token)
+TermsProcessingCompound-Unithood: If we get 'sp'.childCount from Affinity --> 'SP' should separate from Catalyst and EY OWA.
+TermsProcessingCompound-Unithood: Q: Why childCount is so low (2 - 3 for all 3 management users) compared to other General Terms ?
+TermsProcessingCompound-Unithood: Rule 1 + Rule 2 will fix it.
+TermsProcessingCompound-Unithood: prefixes-dict childRank contrib if parent.rank >= 7 (MIN_STANDALONE_RANK) and child.rank <  MIN_STANDALONE_RANK
+TermsProcessingCompound-Unithood: If allow to contribute childRank to parent with rank 1,2 --> helps Catalyst and EY OWA, but also boost SP (prev top 50) --> topTopic
+TermsProcessingCompound-Unithood: Problem: General Terms were boosted SharePoint, LinkedIn) because they have a lot of children
+TermsProcessingCompound-Unithood: Limit childRank contribution to topics not in top10 (did help for SP)
+TermsProcessingCompound-Unithood: General Terms --> penalize rank /= 3 if childCount >= 15 *** At report dateRange *** - not all.
+TermsProcessingCompound-Unithood: Q: Is Connections a parent or only a Syn ?
+TermsProcessingCompound-Unithood: Only add to Parent Topic counts from 2 Child Topic counts if:
+TermsProcessingCompound-Unithood: Rule 1 (Eyal): If the Child Topic doesn't cross standalone-Topic thresold --> fold its count under its Parent.
+TermsProcessingCompound-Unithood: Rule 2: Child Topic counts shouldn't help a Strong already Top-10 (e.g SharePoint) - Help only the weak
+TermsProcessingCompound-Unithood:  9 x 'SC agenda' + 5 x 'SC offer' -->  both standalone Topics --> so Rule 1 (Eyal) doesn't apply
+TermsProcessingCompound-Unithood: Parsing Fowrards / Qouted Emails
+TermsProcessingCompound-Unithood: Had to improve some of the statistical calc database updating code to do incremental updates
+TermsProcessingCompound-Unithood:--------------------------------------------------------
+TermsProcessingCompound-Unithood:Starts with Capitalized Adj JJ/JJR/JJS
+TermsProcessingCompound-Unithood: Some Good some Bad for TopTopics
+TermsProcessingCompound-Unithood: yaacovc - top10 no change
+TermsProcessingCompound-Unithood: Sure thing  Ctx:RE: AE Candidates\n Sure thing Yaacov, Mervyn just now told -
+TermsProcessingCompound-Unithood: Terms-LM: sentenceStart are topics only if occur also not at sentence start
+TermsProcessingCompound-Unithood:
+TermsProcessingCompound-Unithood: Azure pricing - same
+TermsProcessingCompound-Unithood:: Aspiring category disruptors  Ctx:category disruptor or a category creator? Aspiring category disruptors are unlikely to succeed unless they
+TermsProcessingCompound-Unithood: The author simply flatter Maven Clientsthe audience - the Topic still remains 'Maven Clients'
+TermsProcessingCompound-Unithood: Parent Topics Suffix --> childRank preserve rank of 'Maven Clients'
+TermsProcessingCompound-Unithood: Conc: Most insideBrackets seems to be useful for Acronyms
+TermsProcessingCompound-Unithood: Bug: Deleted: Taxonomy Boot Camp --> Added: Boot Camp (even Taxonomy Boot Camp is all NNP)
+TermsProcessingCompound-Unithood: Prev: It was far enough from prevTerm (Prev KMWorld)
+TermsProcessingCompound-Unithood: Cons:
+TermsProcessingCompound-Unithood:: Ram  Ctx:14:15-16:45   harmon.ie 2018 Product Roadmap [Ram / Yehonathan] - not always the newly extracted
+TermsProcessingCompound-Unithood:cross-lowercase-Noun
+TermsProcessingCompound-Unithood: Parent Topics: Because we now extend more Compound, we do not want to swallow the parent Topics (ex: Board)
+TermsProcessingCompound-Unithood:
+TermsProcessingCompound-Unithood: Atlas --> Atlas termination
+TermsProcessingCompound-Unithood: MSGraph --> MSGraph (folks | search messages | MSGraph team), Hi Sharepoint and MSGraph folks | MSGraph search messages with special characters not work .
+TermsProcessingCompound-Unithood:Do-not-cross-and
+TermsProcessingCompound-Unithood:----------------------------
+TermsProcessingCompound-Unithood: York Police and City of Brampton, Google and Dropbox --> 2 Topics
+TermsProcessingCompound-Unithood:
+TermsProcessingCompound-Unithood: Query to find the X and Y terms
+TermsProcessingCompound-Unithood:{ $project: { _id: 0, updateId : 1, 'terms.text' : 1,  subject : 1, body : 1, "from.mail" : 1} },
+TermsProcessingCompound-Unithood:]);
+TermsProcessingCompound-Unithood: Cases
+TermsProcessingCompound-Unithood: Convert a page of updates.subject+update.body --> single text document
+TermsProcessingCompound-Unithood: Convert update.terms --> .ann file with offsets + badTopic/topic lookup in expectedTopics.json
+TermsProcessingCompound-Unithood: After user edited annotations --> read .ann files --> get annotated text (no need for offsets) to expectedTopics.json
+TermsProcessingCompound-Unithood: 'We started working on Actions Summary yesterday' --> actual: 'Summary' expected: 'Actions Summary'
+TermsProcessingCompound-Unithood: Fix SharePoint influencers (below) + 'Migration to SharePoint'
+TermsProcessingCompound-Unithood: CValue (1994): Only standalone occurences counts. If it appears nested as part of longer terms - substract them from all occurrences (remaining are standalone)
+TermsProcessingCompound-Unithood: Formula:
+TermsProcessingCompound-Unithood: Uses 4 other methods
+TermsProcessingCompound-Unithood: "SemRe-Rank": See Unithood old and newer methods  https://arxiv.org/pdf/1711.03373.pdf
+TermsProcessingCompound-Unithood: Language model will fix most of these
+TermsProcessingCompound-Unithood:Automated Phrase Mining from Massive Text Corpora (2018) https://arxiv.org/pdf/1702.04457.pdf
+TermsProcessingCompound-Unithood: Capitalized/ Title : probabilities of a phrase in quotes, brackets or capitalized
+TermsProcessingCompound-Unithood: Getting Started (OOTB default model)
+TermsProcessingCompound-Unithood: Train Custom Model
+TermsProcessingCompound-Unithood: RAW_TRAIN: path to input text file. a document per line
+TermsProcessingCompound-Unithood: MIN_SUP: min freq of term to be taken as candidate (def: 10)
+TermsProcessingCompound-Unithood: Change report to indicate sentence-start
+TermsProcessingCompound-Unithood: כדי - Hebrew words
+TermsProcessingCompound-Unithood: Ex: CFO |
+TermsProcessingCompound-Unithood: Test if in topTopics
+TermsProcessingCompound-Unithood:--------------
+TermsProcessingCompound-Unithood: Integration of current state of Algorithms, with very little Quality improvements - only Critical bug fixes
+TermsProcessingCompound-Unithood: Reports Viewer based - see your Top Topics.
+TermsProcessingCompound-Unithood: Most of good topics will come from Dictionary
+TermsProcessingCompound-Unithood: Ex: Thanx is still a top topic for davidl (uses it instead of Thanks)
+TermsProcessingCompound-Unithood: Current algorithms cannot handle it
+TermsProcessingCompound-Unithood: Workaround: We can Blacklist it, but others Slang words may comeup.
+TermsProcessingCompound-Unithood: General: The whole team will work for several months on integration of what we already have - no other work:
+TermsProcessingCompound-Unithood: Large backlog resulting from lack of resources until mid Aug-2018
+TermsProcessingCompound-Unithood: Problem: There is a lot of noise in individual Email Topics that doesn't exist in topTopics because topTopics have high counts
+TermsProcessingCompound-Unithood: Communicate: Time Estimations - 23 weeks
+TermsProcessingCompound-Unithood: cronjob / k8s Job ? Infra
+TermsProcessingCompound-Unithood: Stay with today's integration - removeSignature
+TermsProcessingCompound-Unithood: Duplicate - 2.5 weeks
+TermsProcessingCompound-Unithood: General Topics - 1 week
+TermsProcessingCompound-Unithood: See UI Group Parent-Children --> Solution to current General Terms
+TermsProcessingCompound-Unithood: New Users + Enron - 2 weeks
+TermsProcessingCompound-Unithood: Terms Processing Bugs - 1 week
+TermsProcessingCompound-Unithood: Mix nlp and dictionary - 1 week
+TermsProcessingCompound-Unithood: Collage Team:
+TermsProcessingCompound-Unithood: UI: Group Strongly Related TopTopics - RSPB <--> Case Study --> Makes it clear and makes room for more TopTopics
+TermsProcessingCompound-Unithood: Artifacts with Sender .isAutomated = true
+TermsProcessingCompound-Unithood: Unique Union of childTopics from last 3 months
+TermsProcessingCompound-Unithood: reports.js Productionzation mode
+TermsProcessingCompound-Unithood: Graph nodes/edges new attributes
+TermsProcessingCompound-Unithood: Build and Deployment
+TermsProcessingCompound-Unithood: Collage deployment pulls the containers --> deployment.yml --> inject secrets.json and urls to other dependent services (Redis ...)
+TermsProcessingCompound-Unithood:url to cause Collage to fetch it from Mongo and process it.
+TermsProcessingCompound-Unithood: Eliyahu: Spark Java Jobs - Debugger, Logs, Metrics
+TermsProcessingCompound-Unithood: Required? Simulate Graph RDD with Local Data (MongoDB)
+TermsProcessingCompound-Unithood:: Q: Is Top-1 or Top-2 (nlp is required for 1 or 2 topics) harder than Top-10 ?
+TermsProcessingCompound-Unithood: Implementation: Scalable Productization of existing research
+TermsProcessingCompound-Unithood: Productivness impact
+TermsProcessingCompound-Unithood:: Investigate: Does single (no compound) is quality enough ?
+TermsProcessingCompound-Unithood:"Online Framework
+OnlineFramework: Verify textLimit 10000
+OnlineFramework: Repro with 2 node processes (parallel.bat calls start node extractTerms)
+OnlineFramework: !!!! Purge Q
+OnlineFramework: mongo_diff
+OnlineFramework: Problem: Now g.V().has('isAutomated',true).count() - 1046 and myContacts.isAutomated 1005
+OnlineFramework: badLMTopic - 2133 vs. 2134 / 2135 in prev runs
+OnlineFramework: Noam: Probably the time the email was sent (maybe created and composed for a long time before sending it).
+OnlineFramework: Revert .only
+OnlineFramework: require json data + pass it to termsExtracor
+OnlineFramework:which is o.k. for now, because no ML train process is needed every new N stats (as in ML)
+OnlineFramework: Q: Is it a separate arch-interfaces that we can postpone for now ?
+OnlineFramework: TextProcessors in Online Framework:
+OnlineFramework: Problem: Cannot delete urls from researchUpdate.bodyForTermsExtraction before signature - becuase sig counts urls ...
+OnlineFramework: PER: Tokenize (if needed) + call calcIsPerson + Save stats to myContacts
+OnlineFramework: Note: Framework do not call updaters if !options.save
+OnlineFramework: Problem: Multi-user is not the same as single user
+OnlineFramework: Unique updateId(s)
+OnlineFramework: DateTime - use the exact same dateRange
+OnlineFramework: YS: Fix 2 terms with same topicId in same update (differet text)
+OnlineFramework: Admin test - only extract tokens and return immediatly
+OnlineFramework: After lowercase + sort --unique --> Graph has 3597 actors (myCotacts + Q/A actors: o'hara@harmonlie, spiovadimc@harmon.ie, user.dot@harmon.ie)
+OnlineFramework: trim + lowercase in mailHandlers.js
+OnlineFramework:b) set version in package.json
+OnlineFramework: Q: Which npm command up version automatically ?
+OnlineFramework: Note: dictTopics indexes are created
+OnlineFramework: updatedAt is String and not Date --> query return empty
+OnlineFramework: create insertMail and bind it in worker.js to STORAGE_SERVICE_TEXT_WITH_TERMS_RECEIVED_QUEUE
+OnlineFramework:messaging.sendEmailWithActors(message) --> MAIL_WITH_ACTORS_SUBSCRIPTION --> 	STORAGE_SERVICE_MAIL_WITH_ACTORS_RECEIVED_QUEUE --> mail.js::insertArtifactWithActors
+OnlineFramework: Conversation with User CONVERSATION_WITH_USER_SUBSCRIPTION  --> STORAGE_SERVICE_CONVERSATION_WITH_USER_RECEIVED_QUEUE --> storage-worker.insertConversationWithUser
+OnlineFramework: Integrate with Collage Docker Container / Message Queue
+OnlineFramework: Keep textProcessor --> removeSignature
+OnlineFramework: In framework, this call is in processArtifact.js --> nested inside framework
+OnlineFramework: Solution (Short Term):  textProcessor - bodyForTermsExtraction
+OnlineFramework: termsProcessing (more than one)
+OnlineFramework: Q/A: npm_install_all (.bat+sh): add terms_processing --> npm ci
+OnlineFramework: MQ / Rest endpoint --> call processArtifact the same way batchExtract (research) does.
+OnlineFramework: Duplicate code in extractTermsInner::extractTerms + part of extractTermsInner::processArtifact
+OnlineFramework: occurs
+OnlineFramework: old paths
+OnlineFramework: createFinalTerms vs. merge-with-Structured-Terms in termsExtractor
+OnlineFramework:},
+OnlineFramework:at processArtifact (/service/termsExtractor.js:69:38)
+OnlineFramework: TEnvVars to debug TERMS_NO_PER = 'false', TERMS_NO_LM = 'false' values-dev.yml --> affects options.noPer
+OnlineFramework: See 'nested-git-url
+GATopTopics/RankedTopics/Spark: Spark: Per-User emails of a report
+GATopTopics/RankedTopics/Spark: Problem: must be processed within a single worker
+GATopTopics/RankedTopics/Spark: Parent Topics
+GATopTopics/RankedTopics/Spark: Self Join in DataFrame by matching prefix to topicId
+Performance/Scalability: Count Min Sketch - like Bloom Filter (multiple hashes), but with counting, taking the min counter of all hashes -
+Performance/Scalability: Problem: How to aggregate Top N ?
+Performance/Scalability: Solution Online: Counter (Count Min Sketch) per user+date(day)+term + Per user Map of <Term,Counters>
+Performance/Scalability: Lost 5 lower-case occurrences --> but Drilldown uses Search --> meaning it will still display them (we caa postprocess results of search to filter out)
+Performance/Scalability: Terms-LM: Do we need Spark for online-update of Terms-LM langModel ?
+Performance/Scalability: Few Spark instances for a short time period should be enough.
+Performance/Scalability: Cache: - set of Terms already crossed threshold (say common threshold - not the highest for sentence start)
+Performance/Scalability:5) When 'SP NA conf' finally crosses threshold --> async Job updates all updates that had this Term pending on decision if Topic
+Performance/Scalability:7) G.C: Many terms will never come close to threshold (say occur 1 or 2 times). We do not want to store those in memory (10 million dead Terms)
+Performance/Scalability:8) Conc: For Terms-LM: No need to rescan updates (emails) a second time with Spark - only update their Terms to Topics if threshold is crossed (above).
+Performance/Scalability: Same Spark Job batch - we do have all data of all updates and instances
+Performance/Scalability: Not duplicate ? --> rightNbr x 2
+Performance/Scalability: Not duplicate ? --> leftNbrNL x2
+Performance/Scalability: Try to calc leftNbrNL (maybe even leftNbr diff itself!) while iterating hunks of leftNbr diff ?
+Performance/Scalability: Compare to How many past occr ?
+Performance/Scalability: Terms-LM:
+Performance/Scalability:----------------------
+Performance/Scalability: DataTypes:
+Performance/Scalability: String: Binary sequence - can be large (images)
+Performance/Scalability: Sub-string - GETRANGE
+Performance/Scalability: LTRIM - trims a list to a given length : https://redis.io/commands/ltrim
+Performance/Scalability: Sorted Set - store both Key and Score --> set is always sorted by score
+Performance/Scalability: Serverside
+Performance/Scalability: EVAL accepts a Lua script body with array of KEYS arguments and executes it.
+Performance/Scalability: EVALSHA - executes a cached script
+Performance/Scalability: docker pull redis:latest
+Performance/Scalability: #redis-server &
+Performance/Scalability:Collage Redis
+Performance/Scalability:----------------------
+Performance/Scalability: Uses ZooKeeper (ZK) for management of current cluster state
+Performance/Scalability: Missing: Solution Sheets
+Performance/Scalability: Noise: support@harmon.ie
+Performance/Scalability:"Difflicult cases
+Difflicultcases: Analysis: Only 4 threads with 'Dropbox' (14 days yehonathans@harmon), same with 'GPB' at yaacovc
+Difflicultcases: TF-IDF (Uniqness)- may lower 'GBP' and 'Dropbox' if used a lot everywhere.
+Difflicultcases: POS errors:
+Difflicultcases: 'Nice', 'Works', 'Forgot'
+Difflicultcases: Note: Stanford and Google NLP thinks it is a PROPN
+Difflicultcases:Tim@famapr.com - sometimes real emails and manual (not html) digest
+Difflicultcases: Noise Topics (e.g File, Edit) - that we do not want to see (at least in our context)
+Difflicultcases: Appears in 2 emails - Redmine notifications of the same Task (In Progress / Closed statuses)
+Difflicultcases: We need the max number of matching-pos-tokens by a subset of occurrences (not all occur are duplicate) --> If this number is higher --> the subset size is smaller because less occurrences match a larger number of matching-pos-tokens.
+Difflicultcases: Approximate Position within email (if always appears in the middle or beginning --> allow for smaller duplicate fingerprint --> still threshold it as duplicate)
+Difflicultcases: A: There are alot of repeating 'View Pull Request' --> so we may not need Html for now
+Difflicultcases: Citrix Ready -
+Difflicultcases: Q: Why all emails except 1 are isFocus = false (David replied to this thread) --> isNonContributor = true
+Difflicultcases: Investigate IsTerm : Wikipedia + freebase to boost Term score.
+Difflicultcases: NLP Proper Noun (like today)
+Difflicultcases: Up thershold from 2 to 10 (for words that do not appear in Wikipedia)
+Difflicultcases:b) Rank contrib to Update
+Difflicultcases:"Features Score "Factors
+FeaturesScoreFactors:: Merge with other 'Features Score 'Factors
+FeaturesScoreFactors: Importance of Conversation / Email / Sender - Convince/Pitch/Sell, Schedule meeting, Request, Commit, Task
+FeaturesScoreFactors: Multiple Sources: SharePoint Recent Documents, SalesForce, Calendar
+FeaturesScoreFactors: Ex: If only Jean is using 'Dll' (in multiple Email-Threads) --> shouldn't be a Topic
+FeaturesScoreFactors: Ex: Neg: If wrote Cake is in the Kitchen (personal/hr related) or PER or LOC --> our filters should still remove it (so not every PROPN the user wrote is important)
+FeaturesScoreFactors: Topic Click Session: After click - If user clicked one of the Drilldown results --> higher rank
+FeaturesScoreFactors: Email Topics: If user selected an email from a 'Bad' sender --> dec Rank for Topics only from this Sender (ex: Support Technical Terms for Ron, while Customer names in support emails are important, because they are found in other good-Senders emails)
+FeaturesScoreFactors: Importance of the Email/Calendar/Document/Folder-Name containing the Topic to the user:
+FeaturesScoreFactors: ?? User in To/CC: If user is not in the To and not in CC (sent to mailing list - support@harmon.ie)  --> lower rank
+FeaturesScoreFactors: Interaction with the Emails - What has the user done with the Email/Doc containing the Topic ?
+FeaturesScoreFactors: Time to Respond/Whether Responded to Email containing the Topic
+FeaturesScoreFactors: Open/Read a mail with the topic
+FeaturesScoreFactors: Filed - more important
+FeaturesScoreFactors: Problem: davidl deletes old emails (3 months old) - both less important and topTopics emails, which he knows he is done with --> no separator.
+FeaturesScoreFactors: /used - specificity of Follow update-source: If follow a large Sales > Accounts --> It is less specific than Email to my Inbox
+FeaturesScoreFactors: Slides are more carefully written and reviewed compared to Emails --> should contain important Topics (with correct spelling).
+FeaturesScoreFactors: Dict (or certain Dict type) --> rank higher
+FeaturesScoreFactors: Signature / Sent from 'OWA' on Android / Sent from 'Outlook' on Android--> lower
+FeaturesScoreFactors: Other Collage orgs
+FeaturesScoreFactors: Multi word title and every word is capitalized, (except prepositions, DET, conj, relative PROPN or neg), consider it an entity --> single word title --> require 65% occur in article text capitalized
+FeaturesScoreFactors: See LinkProbability method
+FeaturesScoreFactors: If page has hight pagerank --> higher score
+FeaturesScoreFactors: If this ratio is low --> require more occurences
+FeaturesScoreFactors: 'Terms Processing and Ranking 'Unithood' (Compound/Subsumption):
+FeaturesScoreFactors: If a longer Keyphrase contains this Keyphrase --> lower (less specific). See 'Basic' - method to find average specificity terms (Ex: Microsoft Office)
+FeaturesScoreFactors: PageRank/Personalized PageRank: (long documents) a candidate is important if it is related to (1) a large number of candidates and (2) candidates that are important.   (Per document, Per user..)
+FeaturesScoreFactors: Word-Vector distance (see 'SemRe-Rank)
+FeaturesScoreFactors: Ex: Email about a conference describing a list of subejcts: 'FW: Deadline April 23:  KMWorld November Events Call for Speakers' from:Gina@famapr.com
+FeaturesScoreFactors: Reads/Has a lot of emails with this topic in the report period (but not so much topic-count in other periods, other users ...)
+FeaturesScoreFactors: Compare to other periods (weeks)
+FeaturesScoreFactors: Compare User + Closed 	 vs. The others ....
+FeaturesScoreFactors: Latent Factors: SVD / LDA:
+FeaturesScoreFactors:--------------------------------------------
+FeaturesScoreFactors: Open my machine name under Cosmos in Azure - so unit-testing works
+FeaturesScoreFactors: After code pushed to Alpha: plink map local port to alpha mongo. delete user tokens + refresh link
+FeaturesScoreFactors: Problem: Yaacov Feedback - Only 2 were relevant. Many old
+TFIDF: Report for counting/counting rank of every top topic every 2 weeks (like running many reports.js in 2 weeks intervals, for each user)
+TFIDF: Output csv file --> Plot and analyze in Excel.
+TFIDF: rspb - has high count in Mar, Jun, (not in  Jul), Aug
+TFIDF: Problem: What is a high count ? Ram has fewer emails, so all his counts are lower
+TFIDF:- - - - - -
+TFIDF:Tools
+EmailImportance: These classes serve as high-level features to predict Topic/Email importance.
+EmailImportance:- - - - -
+EmailImportance: Speech Acts and Dialog Acts
+EmailImportance: Important Acts: Convince/Pitch/Sell (Internal and External Pitch), Schedule meeting, Request, Commit, Task (related also to the other acts)
+EmailImportance: If some inside-sales sends me an email trying to sell me something (schedule a call with me) --> may not be so important to me (the report-user)
+EmailImportance: Usage in email in https://medium.com/@paulomalvar/couriers-question-classifier-88c96c8a9a29
+EmailImportance: Article with Datasets -
+EmailImportance:Read: Gmail Priority Inbox - https://github.com/drewconway/ML-Email-Code/blob/master/04-Priority_Inbox/priority_inbox_learning.pdf
+EmailImportance: On the other hand, shorter, less important emails containing less important Topics may be easier to reply immediately (ex: Did you sent the build to the customer ?)
+EmailImportance:---------------------------------------------
+EmailImportance: Entities (from Stanford tokens)- use PER and DateTime to abstract training samples (as LUIS does) - they appear frequently in Schedule sentences.
+EmailImportance: What is enough context (sentence) that isn't too large (and contains irrelevant words)
+EmailImportance: ML classifier should handle it.
+EmailImportance:Train Dataset for Dialog Acts
+TrainDatasetforDialogActs:Positive relationship sentences
+TrainDatasetforDialogActs:Thanx much for your time and input today. In follow up to our conversation about
+TrainDatasetforDialogActs:Same time on Monday or Tuesday work for you?
+TrainDatasetforDialogActs:Have you got a few minutes to chat about our product?
+TrainDatasetforDialogActs:Are you available for a brief 15 to 20 minute meeting next Tuesday or Thursday morning
+TrainDatasetforDialogActs:to get the ball rolling
+TrainDatasetforDialogActs:Get started with your free trial
+TrainDatasetforDialogActs:Sign up now
+TrainDatasetforDialogActs:I am on it!
+SearchQueryLogsImplicitFeedback:Goal: Connect to Outlook,SharePoint and Google search - if user searches for a Topic-word --> higher score
+SearchQueryLogsImplicitFeedback: Problem: It will not allow us to overcome the ProperNoun limitation.
+SearchQueryLogsImplicitFeedback:: Intranet / Custom Search engine - How to determine which urls from browser history are considered ?
+SearchQueryLogsImplicitFeedback: Classifier for search queries (based on query and results ...)
+SearchQueryLogsImplicitFeedback:How to Collect the Search Logs
+SearchQueryLogsImplicitFeedback:Enhance:Google: Use APIs similar to MyLastSearch (nirsoft) to extract browser cache + browser history to collect google / Bing / Others searches
+SearchQueryLogsImplicitFeedback: Spellcheck: The final submitted query may have spelling mistakes (Ex: unsupervised traning), which Google 'did you mean' corrects on the fly.
+PersonTopicsInvalidation: Ex: IBM Partnerworld (in sujb) --> wasn't recognized as a Topic IBM (even though I have IBM as Topic)
+PersonTopicsInvalidation: Topic['IBM'].invalid = true.
+PersonTopicsInvalidation: Problem: Fixes the 'IBM' invalidator, but doesn't fix mail From: 'Connections Cloud' --> Invalidates Connections topic
+PersonTopicsInvalidation: Better detection of marketing emails contributes also to fixing other bugs.
+PersonTopicsInvalidation: Use Databases of Person names from all the world (as opposed to Standford eng models)
+isMarketingEmail: Build emailStats on corpus:
+isMarketingEmail: cd Reports/tests/marketing
+isMarketingEmail: Run automated test against myContacts_expected.json
+isMarketingEmail:- - - -
+isMarketingEmail: 'harmon.ie Support Request' emails, that are n
+isMarketingEmail: David
+isMarketingEmail: Tim is a real person, which really corresponds with davidl (.To and .Cc, all its from is isFocused=true)
+isMarketingEmail: See D:\Backup\Collage\personSubstr.js + add matchNonPersonTokSubStr : 0 to filterInfo object init.
+isMarketingEmail:
+isMarketingEmail: Ex: Ijona Skills <webinar@ijonaskills.us>
+isMarketingEmail: Ex: David Seymour <redmond@1105tech.com>
+isMarketingEmail: Problem: Non-english displayName  זהר ברג <berg@zazim-bareshet.co.il>
+isMarketingEmail: Individual marketing email detection using scoring of several strong features (without emailStats)
+isMarketingEmail: Added reFilteAutomatedDiff to understand the diff
+isMarketingEmail: Q: Does it overcome matching domainTok ?
+isMarketingEmail: Types of Automated Emails
+isMarketingEmail: Marketing
+isMarketingEmail: Ex: Redmine plan.io notifications - Html body, .To = 0, Outside org
+isMarketingEmail: Workflow (DocuSign)
+isMarketingEmail: CRM Domain mapping: the email is from their domain (aon.com) , which we consider important
+isMarketingEmail: Ex: 'Getting started with your harmon.ie VIP access' - sent from a real sales person Alyssa Franklin <alyssaf@harmon.ie>
+isMarketingEmail: Manual with non-Person email address
+isMarketingEmail: Ex: From: ITASSET.MANAGER@gd-ms.com, Subject: RE: GENERAL DYNAMICS MIS PO 51ESM1003408 Supplier: HARMON.IE CORP Body: All, Please confirm that deliverables ...
+isMarketingEmail: Only startsWith or endsWith - avoid counting twice in case of exact match (but it should have been filtered out by matchDomainTok - full match)
+isMarketingEmail: Microsoft <microsoft@email.microsoftemail.com>  - tok + [e]mail --> domainTok
+isMarketingEmail: Dropbox <no-reply@dropboxmail.com> 			- tok + [e]mail --> domainTok
+isMarketingEmail: Does from|marketing appears in displayName ?
+isMarketingEmail: Does marketing appears in user part of emailAddress (substr) ?
+isMarketingEmail: reply - suffix of a token
+isMarketingEmail: email@mail.salesforce.com
+isMarketingEmail: Do not substr 'mail' --> nbettach@gmail.com
+isMarketingEmail: Subject - find more words
+isMarketingEmail: We may need them to differentiate between marketing and machine-generated (plan.io) emails
+isMarketingEmail: We can use it to disqualify a single email (ex: full of Html tags) --> a solution to the lowStats problem
+isMarketingEmail: use mailUpdates --> but also add emailStats of mailUpdates  --> require inc. update of stat counters
+isMarketingEmail: Common marketing words/links in body: unsubscribe/subscribe -
+isMarketingEmail: Problem: Today, a sharepoint actor is created only if the user posted or received an SP update - meaning less active SP users will not have actors.
+isMarketingEmail: Users do not send emails to marketing addresses and rarely send to automated systems
+isMarketingEmail: Scan Sent Folder to detect non-Person emails
+isMarketingEmail: Cloud based (Connections / IBM Workspace) - do contain the 'You can unsubscribe' text
+isMarketingEmail: Problem: Zendesk Notification Emails are not repetitive - the main content is comments to the issue
+isMarketingEmail: Good Technology
+isMarketingEmail:To unsubscribe from future emails or to update your e-mail preferences, click here.
+isMarketingEmail: Marketing Urls: content of urls (query params - utm_campaign, go.xxx links, )
+isMarketingEmail: collect common substrings from many Captioned Urls
+isMarketingEmail: Marketing (always), Automated (not always - Jenkins, VIP Access from ronj or richard ...)
+isMarketingEmail: Marketing (always), Automated (not always - Jenkins ...)
+isMarketingEmail: Org wide stat
+isMarketingEmail: Note: The graybox at the bottom is generated by MS/Exchange and is NOT part of the original email body: Getting too much email from Watson Workspace <donotreply@workspace.ibm.com>? You can unsubscribe
+isMarketingEmail: The original body still contains the word unsbscribe very often.
+isMarketingEmail: Note: Citrix uses the mktg events company - so they send the emails for Citrix.
+isMarketingEmail: Connections Cloud <no-reply@collabserv.com>
+isMarketingEmail: Travel Document itinerary@amadeus.com
+isMarketingEmail: The Progress Team <progresssoftware@businessmaking.progress.net>
+isMarketingEmail: NetApp <mail@marketing.netapp.com>
+isMarketingEmail: Tasktop Events <events@tasktop.com>
+isMarketingEmail: BrowserStack <hello@browserstack.com>
+isMarketingEmail: Microsoft <Microsoft@e-mail.microsoft.com>
+isMarketingEmail: Ava Zoom <a@zoom.ai>
+isMarketingEmail: LinkedIn Security security-noreply@linkedin.com
+isMarketingEmail: Tracy at European SharePoint, Office 365 & Azure Conference
+isMarketingEmail: Number of Words at From: that are found in Wikipedia as non Person names
+isMarketingEmail: IBM Watson Knowledge Studio
+isMarketingEmail: Repetitive structure - See 'Duplicate
+isMarketingEmail: Collect all emails from this sender From: Address in the Org -->
+isMarketingEmail: Note: Even when it was false, OWA displayed the unsubscribe UI - which is probably based on a classifer other than this property.
+isMarketingEmail:2)	Bug about Collage not mapping a domain for a specific email because it was marked as Marketing Email. We fixed this bug and perhaps this solution can be done on ‘regular’ topic extraction and not just for domain mapping.
+isMarketingEmail: Note: isNotPersonalName - if not in your Outlook Contacts - it only means you didn't add them to Contacts, not it is an automated mail (mailboxType !== 'Contact' && mailboxType !== 'Mailbox')
+isMarketingEmail: Write .test.js based on myContacts_trainset.json (same format as sigs data.json test)
+isMarketingEmail: Connect to myContacts and compare isAutomated, isPerson to expected.
+isMarketingEmail: join query with mailUpdates - display 3 emails from this contact
